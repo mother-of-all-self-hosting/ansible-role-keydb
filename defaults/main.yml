@@ -10,23 +10,25 @@
 keydb_enabled: true
 
 keydb_identifier: keydb
-
-keydb_uid: ''
-keydb_gid: ''
-
-keydb_connection_password: ""
-
 keydb_base_path: "{{ keydb_identifier }}"
 keydb_data_path: "{{ keydb_base_path }}/data"
 
 keydb_version: 6.3.4
-keydb_arch: x86_64
+
+keydb_uid: ''
+keydb_gid: ''
 
 keydb_container_image: "{{ keydb_container_image_registry_prefix }}eqalpha/keydb:{{ keydb_container_image_tag }}"
 # Alpine images are only available for x86_64
 keydb_container_image_tag: "{{ 'alpine_' if keydb_arch == 'x86_64' else '' }}{{ keydb_arch }}_v{{ keydb_version }}"
 keydb_container_image_registry_prefix: docker.io/
 keydb_container_image_force_pull: "{{ keydb_container_image.endswith(':latest') }}"
+
+# Controls whether the container exposes a port (tcp/6379 in the container)
+# that can be used to access keydb from outside the container
+#
+# Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:6379"), or empty string to not expose.
+keydb_container_keydb_bind_port: ""
 
 # The base container network. It will be auto-created by this role if it doesn't exist already.
 keydb_container_network: "{{ keydb_identifier }}"
@@ -49,8 +51,6 @@ keydb_systemd_required_services_list: "{{ [devture_systemd_docker_base_docker_se
 # List of systemd services that the keydb systemd service wants
 keydb_systemd_wanted_services_list: []
 
-# Controls whether the container exposes a port (tcp/6379 in the container)
-# that can be used to access keydb from outside the container
-#
-# Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:6379"), or empty string to not expose.
-keydb_container_keydb_bind_port: ""
+keydb_connection_password: ""
+
+keydb_arch: x86_64
