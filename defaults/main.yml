@@ -30,7 +30,7 @@ keydb_container_image_registry_prefix_upstream_default: docker.io/
 keydb_container_image_force_pull: "{{ keydb_container_image.endswith(':latest') }}"
 
 # Controls whether the container exposes a port (tcp/6379 in the container)
-# that can be used to access keydb from outside the container
+# that can be used to access KeyDB from outside the container
 #
 # Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:6379"), or empty string to not expose.
 keydb_container_keydb_bind_port: ""
@@ -52,13 +52,13 @@ keydb_container_stop_grace_time_seconds: "{{ [devture_systemd_docker_base_contai
 # A list of extra arguments to pass to the container
 keydb_container_extra_arguments: []
 
-# List of systemd services that the keydb systemd service depends on
+# List of systemd services that the KeyDB systemd service depends on
 keydb_systemd_required_services_list: "{{ keydb_systemd_required_services_list_default + keydb_systemd_required_services_list_auto + keydb_systemd_required_services_list_custom }}"
 keydb_systemd_required_services_list_default: "{{ [devture_systemd_docker_base_docker_service_name] if devture_systemd_docker_base_docker_service_name else [] }}"
 keydb_systemd_required_services_list_auto: []
 keydb_systemd_required_services_list_custom: []
 
-# List of systemd services that the keydb systemd service wants
+# List of systemd services that the KeyDB systemd service wants
 keydb_systemd_wanted_services_list: []
 
 keydb_connection_password: ""
