@@ -53,7 +53,10 @@ keydb_container_stop_grace_time_seconds: "{{ [devture_systemd_docker_base_contai
 keydb_container_extra_arguments: []
 
 # List of systemd services that the keydb systemd service depends on
-keydb_systemd_required_services_list: "{{ [devture_systemd_docker_base_docker_service_name] if devture_systemd_docker_base_docker_service_name else [] }}"
+keydb_systemd_required_services_list: "{{ keydb_systemd_required_services_list_default + keydb_systemd_required_services_list_auto + keydb_systemd_required_services_list_custom }}"
+keydb_systemd_required_services_list_default: "{{ [devture_systemd_docker_base_docker_service_name] if devture_systemd_docker_base_docker_service_name else [] }}"
+keydb_systemd_required_services_list_auto: []
+keydb_systemd_required_services_list_custom: []
 
 # List of systemd services that the keydb systemd service wants
 keydb_systemd_wanted_services_list: []
