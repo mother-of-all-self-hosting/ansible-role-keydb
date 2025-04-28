@@ -1,5 +1,8 @@
-# SPDX-FileCopyrightText: 2024 Nikita Chernyi
-# SPDX-FileCopyrightText: 2024 Slavi Pantaleev
+# SPDX-FileCopyrightText: 2023 - 2024 Nikita Chernyi
+# SPDX-FileCopyrightText: 2023 - 2025 Slavi Pantaleev
+# SPDX-FileCopyrightText: 2024 Sergio Durigan Junior
+# SPDX-FileCopyrightText: 2025 MASH project contributors
+# SPDX-FileCopyrightText: 2025 Suguru Hirahara
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
@@ -21,7 +24,9 @@ keydb_gid: ''
 keydb_container_image: "{{ keydb_container_image_registry_prefix }}eqalpha/keydb:{{ keydb_container_image_tag }}"
 # Alpine images are only available for x86_64
 keydb_container_image_tag: "{{ 'alpine_' if keydb_arch == 'x86_64' else '' }}{{ keydb_arch }}_v{{ keydb_version }}"
-keydb_container_image_registry_prefix: docker.io/
+keydb_container_image_registry_prefix: "{{ keydb_container_image_registry_prefix_upstream }}"
+keydb_container_image_registry_prefix_upstream: "{{ keydb_container_image_registry_prefix_upstream_default }}"
+keydb_container_image_registry_prefix_upstream_default: docker.io/
 keydb_container_image_force_pull: "{{ keydb_container_image.endswith(':latest') }}"
 
 # Controls whether the container exposes a port (tcp/6379 in the container)
