@@ -12,7 +12,7 @@
 keydb_enabled: true
 
 keydb_identifier: keydb
-keydb_base_path: "{{ keydb_identifier }}"
+keydb_base_path: "/{{ keydb_identifier }}"
 keydb_data_path: "{{ keydb_base_path }}/data"
 
 # renovate: datasource=docker depName=eqalpha/keydb versioning=semver
