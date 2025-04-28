@@ -22,24 +22,24 @@ ExecStartPre=-{{ devture_systemd_docker_base_host_command_sh }} -c '{{ devture_s
 ExecStartPre=-{{ devture_systemd_docker_base_host_command_sh }} -c '{{ devture_systemd_docker_base_host_command_docker }} rm {{ keydb_identifier }} 2>/dev/null || true'
 
 ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
-			--rm \
-			--name={{ keydb_identifier }} \
-			--log-driver=none \
-			--user={{ keydb_uid }}:{{ keydb_gid }} \
-			--cap-drop=ALL \
-			--read-only \
-			--network={{ keydb_container_network }} \
-			{% if keydb_container_keydb_bind_port %}
-			-p {{ keydb_container_keydb_bind_port }}:6379 \
-			{% endif %}
-			--mount type=bind,src={{ keydb_base_path }}/keydb.conf,dst=/usr/local/etc/keydb/keydb.conf,ro \
-			--mount type=bind,src={{ keydb_data_path }},dst=/data \
-			--tmpfs=/tmp:rw,noexec,nosuid,size=100m \
-			{% for arg in keydb_container_extra_arguments %}
-			{{ arg }} \
-			{% endfor %}
-			{{ keydb_container_image }} \
-			keydb-server /usr/local/etc/keydb/keydb.conf
+      --rm \
+      --name={{ keydb_identifier }} \
+      --log-driver=none \
+      --user={{ keydb_uid }}:{{ keydb_gid }} \
+      --cap-drop=ALL \
+      --read-only \
+      --network={{ keydb_container_network }} \
+      {% if keydb_container_keydb_bind_port %}
+      -p {{ keydb_container_keydb_bind_port }}:6379 \
+      {% endif %}
+      --mount type=bind,src={{ keydb_base_path }}/keydb.conf,dst=/usr/local/etc/keydb/keydb.conf,ro \
+      --mount type=bind,src={{ keydb_data_path }},dst=/data \
+      --tmpfs=/tmp:rw,noexec,nosuid,size=100m \
+      {% for arg in keydb_container_extra_arguments %}
+      {{ arg }} \
+      {% endfor %}
+      {{ keydb_container_image }} \
+      keydb-server /usr/local/etc/keydb/keydb.conf
 
 {% for network in keydb_container_additional_networks %}
 ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} network connect {{ network }} {{ keydb_identifier }}
