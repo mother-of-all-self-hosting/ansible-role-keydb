@@ -38,6 +38,9 @@ keydb_container_keydb_bind_port: ""
 # The base container network. It will be auto-created by this role if it doesn't exist already.
 keydb_container_network: "{{ keydb_identifier }}"
 
+# The port number in the container
+keydb_container_http_port: 6379
+
 # A list of additional container networks that the container would be connected to.
 # The role does not create these networks, so make sure they already exist.
 keydb_container_additional_networks: "{{ keydb_container_additional_networks_auto + keydb_container_additional_networks_custom }}"
