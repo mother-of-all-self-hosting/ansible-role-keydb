@@ -30,7 +30,7 @@ ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
       --read-only \
       --network={{ keydb_container_network }} \
       {% if keydb_container_keydb_bind_port %}
-      -p {{ keydb_container_keydb_bind_port }}:6379 \
+      -p {{ keydb_container_keydb_bind_port }}:{{ keydb_container_http_port }} \
       {% endif %}
       --mount type=bind,src={{ keydb_base_path }}/keydb.conf,dst=/usr/local/etc/keydb/keydb.conf,ro \
       --mount type=bind,src={{ keydb_data_path }},dst=/data \
