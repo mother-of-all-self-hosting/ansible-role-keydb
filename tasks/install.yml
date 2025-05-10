@@ -45,6 +45,6 @@
 
 - name: Ensure KeyDB systemd installed
   ansible.builtin.template:
-    src: "{{ role_path }}/templates/keydb.service.j2"
+    src: "{{ role_path }}/templates/systemd/keydb.service.j2"
     dest: "{{ devture_systemd_docker_base_systemd_path }}/{{ keydb_identifier }}.service"
     mode: 0644
