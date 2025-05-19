@@ -1,14 +1,18 @@
+# SPDX-FileCopyrightText: 2023 Slavi Pantaleev
 # SPDX-FileCopyrightText: 2024 Nikita Chernyi
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 ---
 
-- block:
-    - when: keydb_enabled | bool
+- name: Perform KeyDB installation tasks
+  block:
+    - name: Validate KeyDB configuration
+      when: keydb_enabled | bool
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/validate_config.yml"
 
-    - when: keydb_enabled | bool
+    - name: Install KeyDB
+      when: keydb_enabled | bool
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/install.yml"
   tags:
     - setup-all
@@ -16,8 +20,10 @@
     - install-all
     - install-keydb
 
-- block:
-    - when: not keydb_enabled | bool
+- name: Perform KeyDB uninstallation tasks
+  block:
+    - name: Uninstall KeyDB
+      when: not keydb_enabled | bool
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/uninstall.yml"
   tags:
     - setup-all
