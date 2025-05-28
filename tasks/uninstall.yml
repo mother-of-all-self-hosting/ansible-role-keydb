@@ -3,13 +3,13 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 ---
-
 - name: Check existence of KeyDB service
   ansible.builtin.stat:
     path: "{{ devture_systemd_docker_base_systemd_path }}/{{ keydb_identifier }}.service"
   register: keydb_service_stat
 
-- when: keydb_service_stat.stat.exists | bool
+- name: Uninstall KeyDB systemd services and files
+  when: keydb_service_stat.stat.exists | bool
   block:
     - name: Ensure KeyDB systemd service is stopped
       ansible.builtin.systemd:
@@ -29,8 +29,8 @@
   register: keydb_data_path_stat
 
 # We just want to notify the user. Deleting data is too destructive.
-- when: keydb_data_path_stat.stat.exists | bool
-  name: Notify if KeyDB local data remains
+- name: Notify if KeyDB local data remains
+  when: keydb_data_path_stat.stat.exists | bool
   ansible.builtin.set_fact:
     devture_playbook_runtime_messages_list: |
       {{
@@ -40,4 +40,3 @@
           "Note: You are not using a local KeyDB instance, but some old data remains from before in `{{ keydb_data_path }}`. Feel free to delete it."
         ]
       }}
-

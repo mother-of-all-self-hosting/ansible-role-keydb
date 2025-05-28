@@ -4,12 +4,11 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 ---
-
 - name: Ensure KeyDB paths exist
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
-    mode: 0750
+    mode: "0750"
     owner: "{{ keydb_uid }}"
     group: "{{ keydb_gid }}"
   with_items:
@@ -20,7 +19,7 @@
   ansible.builtin.template:
     src: "{{ role_path }}/templates/{{ item }}.j2"
     dest: "{{ keydb_base_path }}/{{ item }}"
-    mode: 0640
+    mode: "0640"
     owner: "{{ keydb_uid }}"
     group: "{{ keydb_gid }}"
   with_items:
@@ -39,6 +38,7 @@
 
 - name: Ensure KeyDB container network is created
   community.general.docker_network:
+    enable_ipv6: "{{ devture_systemd_docker_base_ipv6_enabled }}"
     name: "{{ keydb_container_network }}"
     driver: bridge
     driver_options: "{{ devture_systemd_docker_base_container_networks_driver_options }}"
@@ -47,4 +47,4 @@
   ansible.builtin.template:
     src: "{{ role_path }}/templates/systemd/keydb.service.j2"
     dest: "{{ devture_systemd_docker_base_systemd_path }}/{{ keydb_identifier }}.service"
-    mode: 0644
+    mode: "0644"
