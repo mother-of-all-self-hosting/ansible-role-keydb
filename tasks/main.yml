@@ -5,6 +5,7 @@
 
 ---
 - name: Perform KeyDB installation tasks
+  when: keydb_enabled | bool
   tags:
     - setup-all
     - setup-keydb
@@ -12,17 +13,15 @@
     - install-keydb
   block:
     - name: Validate KeyDB configuration
-      when: keydb_enabled | bool
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/validate_config.yml"
     - name: Install KeyDB
-      when: keydb_enabled | bool
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/install.yml"
 
 - name: Perform KeyDB uninstallation tasks
+  when: not keydb_enabled | bool
   tags:
     - setup-all
     - setup-keydb
   block:
     - name: Uninstall KeyDB
-      when: not keydb_enabled | bool
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/uninstall.yml"
