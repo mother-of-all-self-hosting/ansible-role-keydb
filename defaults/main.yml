@@ -29,6 +29,12 @@ keydb_container_image_registry_prefix_upstream: "{{ keydb_container_image_regist
 keydb_container_image_registry_prefix_upstream_default: docker.io/
 keydb_container_image_force_pull: "{{ keydb_container_image.endswith(':latest') }}"
 
+keydb_container_image_self_build: false
+keydb_container_image_self_build_name: "snapchat/keydb:{{ keydb_container_image_self_build_repo_version }}"
+keydb_container_image_self_build_repo: "https://github.com/Snapchat/KeyDB.git"
+keydb_container_image_self_build_repo_version: "RELEASE_{{ keydb_version.split('.')[0] }}_{{ keydb_version.split('.')[1] }}_{{ keydb_version.split('.')[2] }}"
+keydb_container_image_self_build_src_files_path: "{{ keydb_base_path }}/docker-src"
+
 # Controls whether the container exposes a port (tcp/6379 in the container)
 # that can be used to access KeyDB from outside the container
 #

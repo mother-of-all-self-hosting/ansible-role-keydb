@@ -37,7 +37,7 @@ ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
       {% for arg in keydb_container_extra_arguments %}
       {{ arg }} \
       {% endfor %}
-      {{ keydb_container_image }} \
+      {{ keydb_container_image_self_build_name if keydb_container_image_self_build else keydb_container_image }} \
       keydb-server /usr/local/etc/keydb/keydb.conf
 
 {% for network in keydb_container_additional_networks %}
