@@ -68,7 +68,7 @@
           {{ devture_systemd_docker_base_host_command_docker }} build \
           -t "{{ keydb_container_image_self_build_name }}" \
           -f pkg/docker/Dockerfile \
-          --build-arg BRANCH=RELEASE_6_3_4 \
+          --build-arg BRANCH={{ keydb_container_image_self_build_repo_version }} \
           .
       environment:
         DOCKER_CLI_EXPERIMENTAL: enabled
