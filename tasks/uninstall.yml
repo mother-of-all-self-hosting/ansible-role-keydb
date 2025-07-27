@@ -26,7 +26,7 @@
 
     - name: Ensure KeyDB environment variables file does not exist
       ansible.builtin.file:
-        path: "{{ convertx_base_path }}/{{ item }}"
+        path: "{{ keydb_base_path }}/{{ item }}"
         state: absent
       with_items:
         - keydb.conf
