@@ -68,7 +68,10 @@ keydb_systemd_required_services_list_auto: []
 keydb_systemd_required_services_list_custom: []
 
 # List of systemd services that the KeyDB systemd service wants
-keydb_systemd_wanted_services_list: []
+keydb_systemd_wanted_services_list: "{{ keydb_systemd_wanted_services_list_default + keydb_systemd_wanted_services_list_auto + keydb_systemd_wanted_services_list_custom }}"
+keydb_systemd_wanted_services_list_default: []
+keydb_systemd_wanted_services_list_auto: []
+keydb_systemd_wanted_services_list_custom: []
 
 keydb_connection_password: ""
 
