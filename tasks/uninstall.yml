@@ -41,12 +41,14 @@
         cmd: "rmdir {{ keydb_data_path }}"
       register: keydb_data_path_deletion_result
       changed_when: keydb_data_path_deletion_result.rc == 0
+      failed_when: false
 
     - name: Ensure KeyDB base path does not exist if empty
       ansible.builtin.command:
         cmd: "rmdir {{ keydb_base_path }}"
       register: keydb_base_path_deletion_result
       changed_when: keydb_base_path_deletion_result.rc == 0
+      failed_when: false
 
     - name: Ensure KeyDB container network does not exist via community.docker.docker_network
       when: devture_systemd_docker_base_container_network_creation_method == 'ansible-module'
