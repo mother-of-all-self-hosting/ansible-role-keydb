@@ -59,7 +59,9 @@ keydb_container_additional_networks_custom: []
 keydb_container_stop_grace_time_seconds: "{{ [devture_systemd_docker_base_container_stop_grace_time_seconds, 30] | max }}"
 
 # A list of extra arguments to pass to the container
-keydb_container_extra_arguments: []
+keydb_container_extra_arguments: "{{ keydb_container_extra_arguments_auto + keydb_container_extra_arguments_custom }}"
+keydb_container_extra_arguments_auto: []
+keydb_container_extra_arguments_custom: []
 
 # List of systemd services that the KeyDB systemd service depends on
 keydb_systemd_required_services_list: "{{ keydb_systemd_required_services_list_default + keydb_systemd_required_services_list_auto + keydb_systemd_required_services_list_custom }}"
