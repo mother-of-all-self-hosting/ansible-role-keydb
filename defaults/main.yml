@@ -18,8 +18,8 @@ keydb_data_path: "{{ keydb_base_path }}/data"
 # renovate: datasource=docker depName=eqalpha/keydb versioning=semver
 keydb_version: 6.3.4
 
-keydb_uid: ''
-keydb_gid: ''
+keydb_uid: ""
+keydb_gid: ""
 
 keydb_container_image: "{{ keydb_container_image_registry_prefix }}eqalpha/keydb:{{ keydb_container_image_tag }}"
 # Alpine images are only available for x86_64
