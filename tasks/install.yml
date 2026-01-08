@@ -1,5 +1,6 @@
-# SPDX-FileCopyrightText: 2023 - 2024 Slavi Pantaleev
+# SPDX-FileCopyrightText: 2023, 2024 Slavi Pantaleev
 # SPDX-FileCopyrightText: 2024 Nikita Chernyi
+# SPDX-FileCopyrightText: 2026 Suguru Hirahara
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
@@ -15,7 +16,7 @@
     - "{{ keydb_base_path }}"
     - "{{ keydb_data_path }}"
 
-- name: Ensure KeyDB environment variables file created
+- name: Ensure KeyDB support files installed
   ansible.builtin.template:
     src: "{{ role_path }}/templates/{{ item }}.j2"
     dest: "{{ keydb_base_path }}/{{ item }}"
@@ -23,6 +24,7 @@
     owner: "{{ keydb_uid }}"
     group: "{{ keydb_gid }}"
   with_items:
+    - env
     - "keydb.conf"
 
 - name: Run if self-building of KeyDB container image is not enabled
