@@ -38,7 +38,7 @@ keydb_container_image_self_build_src_files_path: "{{ keydb_base_path }}/docker-s
 # Controls whether the container exposes a port (tcp/6379 in the container)
 # that can be used to access KeyDB from outside the container
 #
-# Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:6379"), or empty string to not expose.
+# Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:2586"), or empty string to not expose.
 keydb_container_keydb_bind_port: ""
 
 # The base container network. It will be auto-created by this role if it doesn't exist already.
