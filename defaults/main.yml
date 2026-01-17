@@ -38,7 +38,7 @@ keydb_container_image_self_build_src_files_path: "{{ keydb_base_path }}/docker-s
 # The base container network. It will be auto-created by this role if it doesn't exist already.
 keydb_container_network: "{{ keydb_identifier }}"
 
-# Controls whether the container exposes its HTTP port (tcp/6379 in the container).
+# Specify how the container publishes its HTTP port (as defined by `keydb_container_http_port`).
 #
 # Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:2586"), or empty string to not expose.
 keydb_container_http_host_bind_port: ""
