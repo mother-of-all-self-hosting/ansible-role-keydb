@@ -35,11 +35,10 @@ keydb_container_image_self_build_repo: "https://github.com/Snapchat/KeyDB.git"
 keydb_container_image_self_build_repo_version: "RELEASE_{{ keydb_version.split('.')[0] }}_{{ keydb_version.split('.')[1] }}_{{ keydb_version.split('.')[2] }}"
 keydb_container_image_self_build_src_files_path: "{{ keydb_base_path }}/docker-src"
 
-# Controls whether the container exposes a port (tcp/6379 in the container)
-# that can be used to access KeyDB from outside the container
+# Controls whether the container exposes its HTTP port (tcp/6379 in the container).
 #
 # Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:2586"), or empty string to not expose.
-keydb_container_keydb_bind_port: ""
+keydb_container_http_host_bind_port: ""
 
 # The base container network. It will be auto-created by this role if it doesn't exist already.
 keydb_container_network: "{{ keydb_identifier }}"
