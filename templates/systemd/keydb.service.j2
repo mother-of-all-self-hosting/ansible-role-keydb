@@ -18,8 +18,7 @@ Wants={{ service }}
 [Service]
 Type=simple
 Environment="HOME={{ devture_systemd_docker_base_systemd_unit_home_path }}"
-ExecStartPre=-{{ devture_systemd_docker_base_host_command_sh }} -c '{{ devture_systemd_docker_base_host_command_docker }} stop -t {{ keydb_container_stop_grace_time_seconds }} {{ keydb_identifier }} 2>/dev/null || true'
-ExecStartPre=-{{ devture_systemd_docker_base_host_command_sh }} -c '{{ devture_systemd_docker_base_host_command_docker }} rm {{ keydb_identifier }} 2>/dev/null || true'
+ExecStartPre={{ devture_systemd_docker_base_host_command_sh }} -c 'i=0; while [ "$i" -lt 10 ]; do {{ devture_systemd_docker_base_host_command_docker }} rm -f {{ keydb_identifier }} >/dev/null 2>&1 || true; if ! {{ devture_systemd_docker_base_host_command_docker }} inspect {{ keydb_identifier }} >/dev/null 2>&1; then exit 0; fi; i=$((i + 1)); sleep 1; done; echo "Failed to remove stale container {{ keydb_identifier }}" >&2; exit 1'
 
 ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
       --rm \
@@ -29,13 +28,13 @@ ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
       --cap-drop=ALL \
       --read-only \
       --network={{ keydb_container_network }} \
-      {% if keydb_container_http_host_bind_port %}
-      -p {{ keydb_container_http_host_bind_port }}:{{ keydb_container_http_port }} \
+      {% if keydb_container_keydb_bind_port %}
+      -p {{ keydb_container_keydb_bind_port }}:{{ keydb_container_http_port }} \
       {% endif %}
       --env-file={{ keydb_base_path }}/env \
       --mount type=bind,src={{ keydb_base_path }}/keydb.conf,dst=/usr/local/etc/keydb/keydb.conf,ro \
       --mount type=bind,src={{ keydb_data_path }},dst=/data \
-      --tmpfs=/tmp:rw,noexec,nosuid,size={{ keydb_container_tmpfs_tmp_size }} \
+      --tmpfs=/tmp:rw,noexec,nosuid,size=100m \
       {% for arg in keydb_container_extra_arguments %}
       {{ arg }} \
       {% endfor %}
