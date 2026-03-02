@@ -26,6 +26,7 @@
   with_items:
     - env
     - "keydb.conf"
+  register: keydb_support_files_result
 
 - name: Run if self-building of KeyDB container image is not enabled
   when: "not keydb_container_image_self_build | bool"
@@ -37,20 +38,20 @@
         source: "{{ 'pull' if ansible_version.major > 2 or ansible_version.minor > 7 else omit }}"
         force_source: "{{ keydb_container_image_force_pull if ansible_version.major > 2 or ansible_version.minor >= 8 else omit }}"
         force: "{{ omit if ansible_version.major > 2 or ansible_version.minor >= 8 else keydb_container_image_force_pull }}"
-      register: result
+      register: keydb_container_image_pull_result
       retries: "{{ devture_playbook_help_container_retries_count }}"
       delay: "{{ devture_playbook_help_container_retries_delay }}"
-      until: result is not failed
+      until: keydb_container_image_pull_result is not failed
 
     - name: Ensure KeyDB container image is pulled via ansible.builtin.command
       when: devture_systemd_docker_base_container_image_pull_method == 'command'
       ansible.builtin.command:
         cmd: "{{ devture_systemd_docker_base_host_command_docker }} pull {{ keydb_container_image }}"
-      register: result
+      register: keydb_container_image_pull_result
       retries: "{{ devture_playbook_help_container_retries_count }}"
       delay: "{{ devture_playbook_help_container_retries_delay }}"
-      until: result is not failed
-      changed_when: "'Downloaded newer image' in result.stdout"
+      until: keydb_container_image_pull_result is not failed
+      changed_when: "'Downloaded newer image' in keydb_container_image_pull_result.stdout"
 
 - name: Run if self-building of KeyDB container image is enabled
   when: "keydb_container_image_self_build | bool"
@@ -74,8 +75,8 @@
           .
       environment:
         DOCKER_CLI_EXPERIMENTAL: enabled
-      register: result
-      changed_when: "'Successfully built' in result.stdout or ('writing image' in result.stderr and 'CACHED' not in result.stderr)"
+      register: keydb_container_image_build_result
+      changed_when: "'Successfully built' in keydb_container_image_build_result.stdout or ('writing image' in keydb_container_image_build_result.stderr and 'CACHED' not in keydb_container_image_build_result.stderr)"
 
 - name: Ensure KeyDB container network is created via community.docker.docker_network
   when: devture_systemd_docker_base_container_network_creation_method == 'ansible-module'
@@ -103,3 +104,14 @@
     src: "{{ role_path }}/templates/systemd/keydb.service.j2"
     dest: "{{ devture_systemd_docker_base_systemd_path }}/{{ keydb_identifier }}.service"
     mode: "0644"
+  register: keydb_systemd_service_result
+
+- name: Determine whether KeyDB needs a restart
+  ansible.builtin.set_fact:
+    keydb_restart_necessary: >-
+      {{
+        keydb_support_files_result.changed | default(false)
+        or keydb_systemd_service_result.changed | default(false)
+        or keydb_container_image_pull_result.changed | default(false)
+        or keydb_container_image_build_result.changed | default(false)
+      }}
