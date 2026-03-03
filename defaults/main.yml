@@ -55,11 +55,6 @@ keydb_container_additional_networks: "{{ keydb_container_additional_networks_aut
 keydb_container_additional_networks_auto: []
 keydb_container_additional_networks_custom: []
 
-# Controls how long to wait for the container to stop gracefully before killing it.
-# Because `devture_systemd_docker_base_container_stop_grace_time_seconds` may be quite short and databases are more important to stop gracefully,
-# we default to at least 30 seconds.
-keydb_container_stop_grace_time_seconds: "{{ [devture_systemd_docker_base_container_stop_grace_time_seconds, 30] | max }}"
-
 # Specify the size of the container's tmpfs volume
 keydb_container_tmpfs_tmp_size: 128m
 
