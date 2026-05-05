@@ -27,7 +27,6 @@ keydb_container_image_tag: "{{ 'alpine_' if keydb_arch == 'x86_64' else '' }}{{ 
 keydb_container_image_registry_prefix: "{{ keydb_container_image_registry_prefix_upstream }}"
 keydb_container_image_registry_prefix_upstream: "{{ keydb_container_image_registry_prefix_upstream_default }}"
 keydb_container_image_registry_prefix_upstream_default: docker.io/
-keydb_container_image_force_pull: "{{ keydb_container_image.endswith(':latest') }}"
 
 keydb_container_image_self_build: false
 keydb_container_image_self_build_name: "snapchat/keydb:{{ keydb_container_image_self_build_repo_version }}"
