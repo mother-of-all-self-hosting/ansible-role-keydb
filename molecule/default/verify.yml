@@ -1,0 +1,35 @@
+# SPDX-FileCopyrightText: 2026 Suguru Hirahara
+# SPDX-FileCopyrightText: 2026 spatterlight
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+---
+- name: Verify KeyDB systemd service
+  hosts: all
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Wait for KeyDB service to become active (up to 180s)
+      ansible.builtin.systemd:
+        name: keydb.service
+      register: keydb_service
+      until: keydb_service.status.ActiveState == 'active'
+      retries: 36
+      delay: 5
+
+    - name: Assert KeyDB service is active
+      ansible.builtin.assert:
+        that: keydb_service.status.ActiveState == 'active'
+        fail_msg: "keydb.service not active ({{ keydb_service.status.ActiveState }})"
+        success_msg: "keydb.service is active"
+
+    - name: Retrieve KeyDB service log for debugging
+      when: keydb_debug_service_enabled | bool
+      ansible.builtin.command:
+        cmd: journalctl -xeu keydb.service
+      changed_when: false
+
+    - name: Show KeyDB systemd service status summary
+      ansible.builtin.debug:
+        msg:
+          - "KeyDB systemd: {{ keydb_service.status.ActiveState }}"
