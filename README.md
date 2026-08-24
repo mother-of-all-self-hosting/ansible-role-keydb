@@ -5,7 +5,12 @@ SPDX-FileCopyrightText: 2026 Suguru Hirahara
 SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
-# KeyDB Ansible role
+# KeyDB Ansible role (deprecated)
+
+> [!WARNING]
+> **This role is deprecated and no longer maintained.** The [KeyDB](https://keydb.dev/) project itself has been unmaintained since 2023 — its last release (6.3.4) dates from then.
+>
+> Use [ansible-role-valkey](https://github.com/mother-of-all-self-hosting/ansible-role-valkey) instead. [Valkey](https://valkey.io/) is a well-maintained Redis fork, protocol-compatible with KeyDB.
 
 This is an [Ansible](https://www.ansible.com/) role which installs [KeyDB](https://keydb.dev/) to run as a [Docker](https://www.docker.com/) container wrapped in a systemd service.
 
